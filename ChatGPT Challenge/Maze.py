@@ -104,13 +104,12 @@ line15_end = (800, 500)
 line16_start = (0, 600)
 line16_end = (800, 600)
 
-x = 40
-y = 40
+x_rect_position = 40
+y_rect_position = 40
 
 # Textbox
 font = pygame.font.Font(None, 20)
-text_box = pygame.Rect(x, y, 20, 20)
-
+text_box = pygame.Rect(x_rect_position, y_rect_position, 20, 20)
 
 # Create a grid
 grid_width = 800
@@ -126,12 +125,12 @@ y2 = 100
 screen.fill(White)
 
 # Grid
-Grid = [[1, 1, 0, 0, 0, 0, 0, 0],
-        [0, 1, 0, 0, 0, 0, 0, 0],
-        [0, 1, 1, 0, 0, 0, 0, 0],
-        [0, 0, 1, 0, 0, 0, 0, 0],
-        [0, 1, 1, 0, 0, 0, 0, 0],
-        [0, 1, 1, 1, 1, 1, 1, 1]]
+Grid = [[1, 1, 0, 1, 0, 1, 1, 1],
+        [0, 1, 0, 1, 1, 1, 0, 1],
+        [0, 1, 1, 1, 0, 0, 0, 1],
+        [1, 1, 0, 0, 1, 1, 1, 1],
+        [0, 1, 1, 0, 1, 0, 0, 0],
+        [0, 0, 0, 0, 1, 1, 1, 1]]
 
 # Visual Grid Numbering
 grid_number = 1
@@ -166,39 +165,38 @@ while True:
     y2 += 100
 
     # Grid number showing
-    pygame.draw.rect(screen, White, text_box, 2)
-
     # Color
     for row in range(len(Grid)):
-        for col in range(len(Grid[0])):
-            if Grid[row][col]:
-                #text_surface = font.render(str(grid_number), True, Blue)
-                color = Red
+        for col in range(len(Grid[row])):
+            if Grid[row][col] == 1:
+                text_surface = font.render(str(grid_number), True, Blue)
+                text_color = Red
                 print(str(row) + "  :  " + str(col) + "  :::  " + "1")
-            else:
-                #text_surface = font.render(str(grid_number), True, Red)
-                color = Blue
+            elif Grid[row][col] == 0:
+                text_surface = font.render(str(grid_number), True, Red)
+                text_color = Blue
                 print(str(row) + "  :  " + str(col) + "  :::  "+ "0")
-            
-
-    text_surface = font.render(str(grid_number), True, color)
+    
+    # Draw the numbers     
+    pygame.draw.rect(screen, White, text_box, 2)
+    text_surface = font.render(str(grid_number), True, text_color)
 
     # Show
-    screen.blit(text_surface, (x + 5, y + 5))
-
+    screen.blit(text_surface, (x_rect_position + 5, y_rect_position + 5))
+    
     # Grid number
     grid_number += 1
-    x += 100
+    x_rect_position += 100
 
     # Log
-    print("grid number : " + str(grid_number))
+    #print("grid number : " + str(grid_number))
     #print("x : " + str(x))
     #print("y : " + str(y))
 
     # Next line
-    if x >= 840:
-        x = 40
-        y += 100
+    if x_rect_position >= 840:
+        x_rect_position = 40
+        y_rect_position += 100
 
     # Break loop
     if grid_number == 49:
@@ -209,7 +207,6 @@ while True:
         while error <= 5:
             print("Error")
             error += 1
-    
 
 # Run the game loop
 running = True
@@ -220,7 +217,7 @@ while running:
             running = False
 
     # Update the game state
-
+    
     # Draw to the screen
     pygame.display.flip()  # Update the screen
 
